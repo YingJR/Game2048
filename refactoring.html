@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Game 2048</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <style type="text/css">
+    body {
+        background: #fefee1;
+        color: #8c351e;
+        font-family: "Microsoft JhengHei Bold", Arial, sans-serif;
+        font-size: 36px;
+        text-align: center;
+        overflow: hidden;
+    }
+    
+    #score {
+        color: white;
+    }
+    
+    .Scorebar {
+        margin: 0 auto;
+        padding: 10px;
+        width: 500px;
+        overflow: auto;
+        /*border: 5px solid black;*/
+    }
+    
+    .gameView {
+        margin: 0 auto;
+        padding: 10px;
+        border: 10px solid #4c6a92;
+        background: #cae6f5;
+        border-radius: 10px;
+        width: 500px;
+        height: 500px;
+        z-index: 1;
+    }
+    
+    .title {
+        /*border: 5px solid black;*/
+        float: left;
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .score {
+        background-color: rgba(0, 89, 74, 0.35);
+        border-radius: 10px;
+        /*border: 5px solid black;*/
+        float: right;
+        margin: 20px 0px;
+        padding: 10px;
+        text-align: right;
+    }
+    
+    .row {
+        float: left;
+        margin-bottom: 10px;
+    }
+    
+    .row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .cell {
+        cursor: default;
+        line-height: 117.5px;
+        width: 117.5px;
+        height: 117.5px;
+        margin-right: 10px;
+        float: left;
+        border-radius: 10px;
+        background: rgba(244, 201, 200, 0.5);
+    }
+    
+    .cell:last-child {
+        margin-right: 0px;
+    }
+    
+    .tile {
+        cursor: default;
+        line-height: 117.5px;
+        width: 117.5px;
+        height: 117.5px;
+        margin-right: 10px;
+        position: relative;
+        border-radius: 10px;
+        background: rgba(244, 201, 200, 1);
+    }
+    
+    @keyframes mymove {
+        from {
+            top: 0px;
+        }
+        to {
+            top: 200px;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="all">
+        <div class="content">
+            <div class="gameView">
+                <div class="row">
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                </div>
+                <div class="row">
+                    <div class="cell" id="pos0">0</div>
+                    <div class="cell" id="pos1">0</div>
+                    <div class="cell" id="pos2">0</div>
+                    <div class="cell" id="pos3">0</div>
+                </div>
+                <div class="row">
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                </div>
+                <div class="row">
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="Scorebar">
+            <h1 class="title"><span>content</span></h1>
+            <div class="score">
+                <div id="scoretitle">Score</div>
+                <div id="score">00000</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+//讀檔
+// var Container;
+// var Game;
+function Container() {
+    var pos = [];
+    for (var x = 0; x < 4; x++) {
+        pos[x] = [];
+        for (var y = 0; y < 4; y++) {
+            pos[x][y] = 0; //放數字
+        }
+
+    }
+    this.pos = pos;
+
+    //列出empty
+    this.emptycell = function() {
+         var empty=[];
+        for (var x = 0; x < 4; x++) {
+            for (var y = 0; y < 4; y++) {
+                if (pos[x][y]==0) {
+                    empty.push(x*4+y);
+                    // alert(x+":"+y);
+                }                
+            }
+        }
+        return empty;
+    }
+
+    this.getRandom=function(){     
+        var empty=this.emptycell();
+        var i=Math.random()>0.9?2:1;
+        var rand=[];
+        for (i; i >0; i--) {
+            rand.push(empty[Math.floor((Math.random()*empty.length))]);
+        }
+
+        return rand;
+
+    }
+
+
+}
+var Box;
+
+if (typeof(localStorage) !== "undefined") {
+    if (localStorage.getItem("Container") == null) {
+        // localStorage.setItem("Container", JSON.stringify(Container));
+        Box = new Container();
+    } else {
+        Box = JSON.parse(localStorage.getItem("Container"));
+    }
+} else {
+    console.log("Sorry, your browser does not support Web Storage...");
+}
+// alert(Box.pos);
+Box.pos[0][0]=6;
+Box.pos[0][1]=6;
+Box.pos[0][2]=6;
+Box.pos[0][3]=6;
+
+
+
+Box.pos[2][0]=6;
+Box.pos[2][1]=6;
+Box.pos[2][2]=6;
+Box.pos[2][3]=6;
+Box.pos[3][0]=6;
+Box.pos[3][1]=6;
+Box.pos[3][2]=6;
+Box.pos[3][3]=6;
+alert(Box.getRandom());
+alert(Box.emptycell());
+
+//alert(Box.pos[3][3]);
+
+
+
+$("body").keydown(function() {
+    if (event.which == 37) {
+        new Game(Container).startGame();
+    } else if (event.which == 38) {
+        Container.score = 10;
+        Container.postion[5] = new tile();
+        localStorage.setItem("Container", JSON.stringify(Container));
+    } else if (event.which == 39) {
+
+    } else if (event.which == 40) {
+
+    }
+
+});
+
+
+
+
+
+function Game(Container) {
+    this.Container = Container;
+
+
+    this.startGame = function() {
+        for (var i = 0; i < 16; i++) {
+
+
+
+
+
+
+        }
+
+
+        alert(this.Container.postion[5]);
+    };
+
+
+    this.reset = function() {
+
+    };
+
+
+}
+
+function drawerMove(obj, destination) {
+    var Map = [];
+    for (var x = 0; x < 4; x++) {
+        for (var y = 0; y < 4; y++) {
+            Map[x * 4 + y] = {
+                "x": ($(".row:nth-child(" + (x + 1) + ") > .cell:nth-child(" + (y + 1) + ")").offset().left) - ($(".gameView").offset().left) - parseInt(20),
+                "y": ($(".row:nth-child(" + (x + 1) + ") > .cell:nth-child(" + (y + 1) + ")").offset().top) - ($(".gameView").offset().top) - parseInt(20)
+            }
+        }
+    }
+    // alert(Map[destination].x + ":" + Map[destination].y);
+    var thix = ($(obj).offset().left) - ($(".gameView").offset().left) - parseInt(20);
+    var thiy = ($(obj).offset().top) - ($(".gameView").offset().top) - parseInt(20);
+    // alert(thix+":"+thiy);
+
+
+    var strx = ((Map[destination].x) - thix) + "px";
+    var stry = ((Map[destination].y) - thiy) + "px";
+
+    $(obj).animate({
+        left: strx,
+        top: stry
+    }, 500);
+
+    // $(obj).animate({left: "0px",top: "0px"});
+    //     obj.animate({
+    //     left: Map[destination].x + "px",
+    //     top: Map[destination].y + "px"
+    // });
+
+}
+
+
+
+function tile() {
+    this.value = 0;
+    this.postion = -1;
+}
+
+//dis=>0:left 1:up 2:right 3:down
+function moveAct(postion, dis) {
+    var x = postion % 4;
+    var y = parseInt(postion / 4);
+    switch (dis) {
+        case 0:
+            x > 0 ? x-- : x;
+            break;
+        case 1:
+            y > 0 ? y-- : y;
+            break;
+        case 2:
+            x < 3 ? x++ : x;
+            break;
+        case 3:
+            y < 3 ? y++ : y;
+            break;
+    }
+    return postion = y * 4 + x;;
+}
+
+/*
+ *  start-init-press-move-check-score-press
+ *                                   -win
+ *
+ *   tile -:value:postion:command()
+ *
+ *   tell-check-move
+ *
+ *
+ */
+</script>
+
+</html>

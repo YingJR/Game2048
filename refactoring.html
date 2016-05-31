@@ -105,28 +105,28 @@
         <div class="content">
             <div class="gameView">
                 <div class="row">
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
                 </div>
                 <div class="row">
-                    <div class="cell" id="pos0">0</div>
-                    <div class="cell" id="pos1">0</div>
-                    <div class="cell" id="pos2">0</div>
-                    <div class="cell" id="pos3">0</div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
                 </div>
                 <div class="row">
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
                 </div>
                 <div class="row">
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
-                    <div class="cell">0</div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
                 </div>
             </div>
         </div>
@@ -140,50 +140,105 @@
     </div>
 </body>
 <script type="text/javascript">
-//讀檔
-// var Container;
-// var Game;
 function Container() {
-    var pos = [];
-    for (var x = 0; x < 4; x++) {
-        pos[x] = [];
-        for (var y = 0; y < 4; y++) {
-            pos[x][y] = 0; //放數字
-        }
+    this.pos = [];
+    this.empty = [];
+    this.score = 0;
+    this.init();
+}
 
-    }
-    this.pos = pos;
-
-    //列出empty
-    this.emptycell = function() {
-         var empty=[];
+Container.prototype.init = function() {
+    this.clearAll();
+    this.checkEmpty();
+};
+Container.prototype.clearAll = function() {
+    for (var y = 0; y < 4; y++) {
+        this.pos[y] = [];
         for (var x = 0; x < 4; x++) {
-            for (var y = 0; y < 4; y++) {
-                if (pos[x][y]==0) {
-                    empty.push(x*4+y);
-                    // alert(x+":"+y);
-                }                
+            this.pos[y][x] = null;
+        }
+    }
+};
+Container.prototype.getNewRand = function() {
+    var i = this.empty.length;
+    if (i !== 0) {
+        i = this.empty[Math.floor((Math.random() * i))];
+        this.addCell(i);
+        console.log(i);
+    }
+};
+Container.prototype.addCell = function(seat) {
+    var x = transPos(seat)[0],
+        y = transPos(seat)[1];
+    console.log("X:" + x + ",Y:" + y);
+    this.pos[y][x] = new Tile(Math.random() < 0.9 ? 2 : 4, seat);
+    this.checkEmpty();
+
+    var cell = "<div class='tile'>" + this.pos[y][x].value + "</div>";
+    $(".row:nth-child(" + (y + 1) + ") > .cell:nth-child(" + (x + 1) + ")").append(cell);
+    $(".row:nth-child(" + (y + 1) + ") > .cell:nth-child(" + (x + 1) + ") > div").hide().fadeIn();
+};
+Container.prototype.getCell = function(seat) {
+    var x = new transPos(seat)[0],
+        y = new transPos(seat)[1];
+    if (this.pos[y][x] === null) {
+        return 0;
+    } else {
+        return this.pos[y][x];
+    }
+};
+Container.prototype.checkEmpty = function() {
+    this.empty = [];
+    for (var y = 0; y < 4; y++) {
+        for (var x = 0; x < 4; x++) {
+            if (this.pos[y][x] === null) {
+                this.empty.push(y * 4 + x);
             }
         }
-        return empty;
     }
+};
+Container.prototype.moveAll = function(direction) {
 
-    this.getRandom=function(){     
-        var empty=this.emptycell();
-        var i=Math.random()>0.9?2:1;
-        var rand=[];
-        for (i; i >0; i--) {
-            rand.push(empty[Math.floor((Math.random()*empty.length))]);
+    var temp = [];
+    for (var x = 0; x < 4; x++) {
+        var tile = this.pos[0].pop();
+        if (tile !== null) {
+            temp.push(tile);
         }
-
-        return rand;
-
     }
+    console.log(this.pos[0]);
+    console.log(temp);
+    //}
 
+    //dis=>0:left 1:up 2:right 3:down
+    //     switch (direction) {
+    //     case 0:
+    //         x > 0 ? x-- : x;
+    //         break;
+    //     case 1:
+    //         y > 0 ? y-- : y;
+    //         break;
+    //     case 2:
+    //         x < 3 ? x++ : x;
+    //         break;
+    //     case 3:
+    //         y < 3 ? y++ : y;
+    //         break;
+    // }
+};
 
+//把pos:0~15轉換xy座標[x,y]
+function transPos(intPos) {
+    return [intPos % 4, parseInt(intPos / 4)];
 }
-var Box;
 
+function Tile(value, seat) {
+    this.value = value;
+    this.position = seat;
+}
+
+var Box;
+//讀檔
 if (typeof(localStorage) !== "undefined") {
     if (localStorage.getItem("Container") == null) {
         // localStorage.setItem("Container", JSON.stringify(Container));
@@ -194,41 +249,64 @@ if (typeof(localStorage) !== "undefined") {
 } else {
     console.log("Sorry, your browser does not support Web Storage...");
 }
-// alert(Box.pos);
-Box.pos[0][0]=6;
-Box.pos[0][1]=6;
-Box.pos[0][2]=6;
-Box.pos[0][3]=6;
 
 
 
-Box.pos[2][0]=6;
-Box.pos[2][1]=6;
-Box.pos[2][2]=6;
-Box.pos[2][3]=6;
-Box.pos[3][0]=6;
-Box.pos[3][1]=6;
-Box.pos[3][2]=6;
-Box.pos[3][3]=6;
-alert(Box.getRandom());
-alert(Box.emptycell());
+
+
+
+
+
+Box.getNewRand();
+Box.getNewRand();
+Box.getNewRand();
+
+Box.getNewRand();
+Box.getNewRand();
+console.log(Box.pos);
+console.log(Box.empty);
+// Box.clearAll();
+// alert(Box.getNewRand());
+// alert(Box.emptycell());
+// alert(typeof(Box.pos[1][0]));
 
 //alert(Box.pos[3][3]);
+var Grid = $(".cell").children(".tile").toArray();
+console.log(Grid);
+
+
+
+
+function test(obj, destination) {
+    var Map = [];
+    for (var x = 0; x < 4; x++) {
+        for (var y = 0; y < 4; y++) {
+            var left = ($(".row:nth-child(" + (x + 1) + ") > .cell:nth-child(" + (y + 1) + ")").offset().left) - ($(".gameView").offset().left) - parseInt(20),
+                top =  ($(".row:nth-child(" + (x + 1) + ") > .cell:nth-child(" + (y + 1) + ")").offset().top) - ($(".gameView").offset().top) - parseInt(20);
+            Map[x * 4 + y] = {left:left,top:top};
+
+        }
+    }
+
+    drawerMove($(Grid[0]), 3);
+
+    console.log($(".gameView")[0]);
+
+}
 
 
 
 $("body").keydown(function() {
     if (event.which == 37) {
-        new Game(Container).startGame();
+        test();
     } else if (event.which == 38) {
-        Container.score = 10;
-        Container.postion[5] = new tile();
-        localStorage.setItem("Container", JSON.stringify(Container));
+        Box.moveAll(1);
     } else if (event.which == 39) {
-
+        Box.moveAll(2);
     } else if (event.which == 40) {
-
+        Box.moveAll(3);
     }
+    // console.log(Box.pos);
 
 });
 
@@ -241,26 +319,17 @@ function Game(Container) {
 
 
     this.startGame = function() {
-        for (var i = 0; i < 16; i++) {
-
-
-
-
-
-
-        }
-
-
         alert(this.Container.postion[5]);
     };
-
 
     this.reset = function() {
 
     };
 
-
 }
+
+
+
 
 function drawerMove(obj, destination) {
     var Map = [];
@@ -286,19 +355,6 @@ function drawerMove(obj, destination) {
         top: stry
     }, 500);
 
-    // $(obj).animate({left: "0px",top: "0px"});
-    //     obj.animate({
-    //     left: Map[destination].x + "px",
-    //     top: Map[destination].y + "px"
-    // });
-
-}
-
-
-
-function tile() {
-    this.value = 0;
-    this.postion = -1;
 }
 
 //dis=>0:left 1:up 2:right 3:down
@@ -321,6 +377,11 @@ function moveAct(postion, dis) {
     }
     return postion = y * 4 + x;;
 }
+
+
+
+
+
 
 /*
  *  start-init-press-move-check-score-press

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=0.6,maximum-scale=1.0, user-scalable=0">    
+    <link rel="icon" href="favicon.ico" type="image/ico" />
+    <title>JQuery 2048</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/hammer.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/JQuery2048.css">
+</head>
+
+<body>
+    <div>
+        <h1>Game 2048</h1>
+        <HEADER>
+            <div class="ctrlBtn-container">
+                <div id="ctrlBtn">New Game</div>
+            </div>
+            <div class="scores-container">
+                <div class="scoreTitle">score
+                    <br/>
+                    <span id="score">0</span>
+                </div>
+                <div id="plusScore">+100</div>
+            </div>
+        </HEADER>
+        <div id="gameView">
+            <div id="End-Massage">
+            </div>
+            <div class="row">
+                <div class="cell" id="grid0">
+                </div>
+                <div class="cell" id="grid1">
+                </div>
+                <div class="cell" id="grid2">
+                </div>
+                <div class="cell" id="grid3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell" id="grid4">
+                </div>
+                <div class="cell" id="grid5">
+                </div>
+                <div class="cell" id="grid6">
+                </div>
+                <div class="cell" id="grid7">
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell" id="grid8">
+                </div>
+                <div class="cell" id="grid9">
+                </div>
+                <div class="cell" id="grid10">
+                </div>
+                <div class="cell" id="grid11">
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell" id="grid12">
+                </div>
+                <div class="cell" id="grid13">
+                </div>
+                <div class="cell" id="grid14">
+                </div>
+                <div class="cell" id="grid15">
+                </div>
+            </div>
+        </div>
+        <div class="tips"><strong>HOW TO PLAY:</strong></br>
+        使用<b>方向鍵</b>或<b>滑動畫面</b>來移動方塊,數字相同時會合併成一個,分數達到2048即勝利。
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/JQuery2048.js"></script>
+
+</html>

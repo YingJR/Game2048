@@ -1,0 +1,153 @@
+body {
+    background: #fefee1;
+    color: #8c351e;
+    font-family: "Microsoft JhengHei Bold", Arial, sans-serif;
+    font-size: 36px;
+    text-align: center;
+    overflow: hidden;
+}
+
+h1 {
+    margin: 0 auto;
+    width: 500px;
+}
+
+#gameView {
+    margin: 0 auto;
+    padding: 10px;
+    border: 10px solid #4c6a92;
+    background: #cae6f5;
+    border-radius: 10px;
+    width: 500px;
+    height: 500px;
+    z-index: 1;
+}
+
+.row {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.row:last-child {
+    margin-bottom: 0;
+}
+
+.cell {
+    cursor: default;
+    line-height: 117.5px;
+    width: 117.5px;
+    height: 117.5px;
+    margin-right: 10px;
+    float: left;
+    border-radius: 10px;
+    background: rgba(244, 201, 200, 0.5);
+}
+
+.cell:last-child {
+    margin-right: 0px;
+}
+
+.tile {
+    cursor: default;
+    line-height: 117.5px;
+    width: 117.5px;
+    height: 117.5px;
+    margin-right: 10px;
+    position: relative;
+    border-radius: 10px;
+    background: rgba(244, 201, 200, 1);
+}
+
+header {
+    margin: 0 auto;
+    padding: 0px;
+    width: 510px;
+    height: 80px;
+}
+
+.ctrlBtn-container {
+    width: 245px;
+    float: left;
+}
+
+.scores-container {
+    width: 260px;
+    font-size: 32px;
+    float: left;
+    /*border: 1px solid #4c6a92;*/
+}
+
+#ctrlBtn,
+#keep-on {
+    width: 140px;
+    height: 35px;
+    font-size: 24px;
+    border-radius: 5px;
+    padding: 5px 0px 0px 0px;
+    margin: 20px 0px;
+    font-family: Arial;
+    box-shadow: 0px 10px 14px -7px #324f86;
+    background: linear-gradient(to bottom, #c0e3f5 5%, #07439a 100%);
+    background-color: #79bbff;
+    cursor: pointer;
+    color: #ffffff;
+    text-shadow: 3px 0px 0px #324f86;
+}
+
+#ctrlBtn:hover,
+#keep-on:hover {
+    background: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+    background-color: #378de5;
+}
+
+#ctrlBtn:active,
+#keep-on:active {
+    position: relative;
+    top: 1px;
+}
+
+.scoreTitle {
+    padding-left: 7px;
+    width: 120px;
+    float: right;
+    border-radius: 5px;
+    background: rgb(50, 79, 134);
+    color: #cae6f5;
+}
+
+#plusScore {
+    float: right;
+    /*margin: 35px -205px 0px 0px;*/
+    margin: 40px 10px 0px 0px;
+    display: none;
+}
+
+#End-Massage {
+    position: fixed;
+    /*background-color: rgba(244, 201, 200, 0.4);*/
+    /*background: rgba(202, 230, 245, 0.7);*/
+    width: 500px;
+    height: 500px;
+    z-index: 1;
+    display: none;
+}
+.win{
+    background: rgba(202, 230, 245, 0.7);
+}
+.lose{
+    background: rgba(244, 201, 200, 0.4);
+}
+
+
+#keep-on {
+    padding: 5px 0px 0px 0px;
+    margin: 0px 180px;
+}
+
+.tips {
+    width: 500px;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+    font-size: 1em;
+    margin: 0 auto;
+    text-align: left;
+}
